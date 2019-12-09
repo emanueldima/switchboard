@@ -144,3 +144,14 @@ div.tool hr {
         border-right: 1px solid #ccc;
     }
 }
+
+
+/*/////////////////////*/
+.rstcustom__rowWrapper {
+    padding: 2px 2px 2px 0;
+}
+.rstcustom__rowContents{
+    border: none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}
