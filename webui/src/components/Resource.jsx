@@ -4,6 +4,7 @@ import { processMediatype } from '../actions/utils';
 import SortableTree from 'react-sortable-tree';
 import FileExplorerTheme from 'react-sortable-tree-theme-full-node-drag';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
+import ReactTooltip from 'react-tooltip';
 
 const SelectLanguage = (props) => {
     const value = props.languages.find(x => x.value == props.res.profile.language);
@@ -87,6 +88,21 @@ export class Resource extends React.Component {
         );
     }
 
+    renderBubble() {
+        const style={
+            width: 400,
+            height: 300,
+        }
+        return (
+            <div style={{marginTop:200, marginBottom: 200}}>
+                <a data-tip data-for='mytooltip'>Resource</a>
+                <ReactTooltip id='mytooltip' place='bottom' type='dark' effect='solid' clickable={true}>
+                    <iframe src={window.location} style={style}/>
+                </ReactTooltip>
+            </div>
+        );
+    }
+
     render() {
         const res = this.props.resource;
         return <React.Fragment>
@@ -116,6 +132,9 @@ export class Resource extends React.Component {
                         // this.renderContents()
                     }
                 </div>
+                <div className="row"> {
+                    // this.renderBubble()
+                } </div>
             </div>
         </React.Fragment>;
     }
