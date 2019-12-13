@@ -8,7 +8,7 @@ import Modal from 'react-modal';
 
 import {clientPath} from './constants';
 import rootReducers from './actions/reducers';
-import {fetchApiInfo, fetchAllTools, fetchMediatypes, fetchLanguages, uploadLink} from './actions/actions';
+import {fetchApiInfo, fetchAllTools, fetchMediatypes, fetchLanguages, uploadFile} from './actions/actions';
 
 import {NavBar} from './components/NavBar';
 import {FooterContainer} from './containers/FooterContainer';
@@ -76,7 +76,9 @@ class Application extends React.Component {
         store.dispatch(fetchLanguages());
 
         // todo: remove this
-        store.dispatch(uploadLink('https://b2drop.eudat.eu/s/ekDJNz7fWw69w5Y', 'b2drop'))
+        const blob = new Blob(["this is my sample text"], {type: "application/pdf"});
+        blob.name = "submitted_text.pdf";
+        store.dispatch(uploadFile(blob));
     }
 
     render() {

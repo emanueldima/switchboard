@@ -71,6 +71,7 @@ export class Resource extends React.Component {
         return (
             <div className="row" style={{marginTop:10}}>
                 <div className="col-md-4">
+                    <a href="#">Convert</a>
                 </div>
                 <div className="col-md-8">
                     <div className="welll">
@@ -112,7 +113,8 @@ export class Resource extends React.Component {
                         <div className="resource-header">Resource</div>
                         <div>
                             <a href={res.originalLink || res.localLink}> {res.filename} </a>
-                        </div>
+                            <a className="btn btn-default btn-sm" href="#" style={{marginLeft: 10}}>Extract text</a>
+                        </div>                        
                     </div>
                     <div className="col-md-4">
                         <div className="resource-header">Mediatype</div>
