@@ -42,10 +42,6 @@ Modal.setAppElement("#reactapp");
 class FrameComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.props.history.listen((location, action) => {
-            _paq.push(['setCustomUrl', window.location.href]);
-            _paq.push(['trackPageView']);
-        });
     }
 
     render() {
@@ -70,6 +66,16 @@ const Frame = withRouter(connect(state=>({mode:state.mode}), ()=>({}))(FrameComp
 class Application extends React.Component {
     constructor(props) {
         super(props);
+
+        this.props.history.listen((location, action) => {
+            if (action === 'POP') {
+                store.dispatch(actions.)
+                console.log({location, action});
+            }
+            _paq.push(['setCustomUrl', window.location.href]);
+            _paq.push(['trackPageView']);
+        });
+
         store.dispatch(actions.fetchApiInfo());
         store.dispatch(actions.fetchAllTools());
         store.dispatch(actions.fetchMediatypes());
@@ -99,9 +105,21 @@ class Application extends React.Component {
                 <BrowserRouter>
                     <Frame>
                         <Switch>
-                            <Route exact path={clientPath.root} component={MainContainer} />
-                            <Route exact path={clientPath.input} component={InputContainer} />
-                            <Route exact path={clientPath.tools} component={AllToolsContainer} />
+                            <Route exact path={clientPath.root}>
+                                <MainContainer/>
+                            </Route>
+                            <Route exact path={clientPath.input}>
+                                <InputContainer tab={0}/>
+                            </Route>
+                            <Route exact path={clientPath.inputurl}>
+                                <InputContainer tab={1}/>
+                            </Route>
+                            <Route exact path={clientPath.inputtext}>
+                                <InputContainer tab={2}/>
+                            </Route>
+                            <Route exact path={clientPath.tools}>
+                                <AllToolsContainer/>
+                            </Route>
                             <Route exact path={clientPath.help} component={HelpContainer} />
                             <Route exact path={clientPath.about} component={AboutContainer} />
                             <Route component={NotFound} />

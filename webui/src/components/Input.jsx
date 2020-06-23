@@ -9,28 +9,44 @@ import {isUrl} from '../actions/utils';
 export class Input extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            link: "",
-            text: "",
-        };
         this.handleFiles = this.handleFiles.bind(this);
         this.handleChangeLink = this.handleChangeLink.bind(this);
         this.handleSubmitLink = this.handleSubmitLink.bind(this);
         this.handleChangeText = this.handleChangeText.bind(this);
         this.handleSubmitText = this.handleSubmitText.bind(this);
+        this.state = {
+            link: "",
+            text: "",
+        };
+        console.log("constructor");
+        // this.componentDidUpdate();
     }
+
     static propTypes = {
+        tab: PropTypes.number.isRequired,
         onFile: PropTypes.func.isRequired,
         onLink: PropTypes.func.isRequired,
     };
 
+    componentDidUpdate() {
+        const location = this.props.history.location;
+        const hstate = location.state;
+        if (hstate && hstate.link !== undefined && hstate.text !== undefined) {
+            console.log("set link");
+            this.setState({
+                link: hstate.link,
+                text: hstate.text
+            });
+            hstate
+            this.props.history.replace(location.pathname, null);
+        }
+    };
 
     handleFiles(files) {
         if (!files.length) {
             alert('No file selected');
             return;
         }
-
         this.props.onFile(files[0]);
         this.props.history.push(clientPath.root);
     }
@@ -64,11 +80,18 @@ export class Input extends React.Component {
     }
 
     render() {
+        console.log('input historical state:', this.props.history.location.state);
+        const changeTabFn = (index) => {
+            const urls = [clientPath.input, clientPath.inputurl, clientPath.inputtext];
+            this.props.history.push(urls[index], this.state);
+        }
+
         return (
             <div className="input">
                 <h3>Add your data</h3>
 
-                <Tabs titles={['Upload File', 'Submit URL', 'Submit Text']}>
+                <Tabs titles={['Upload File', 'Submit URL', 'Submit Text']}
+                        active={this.props.tab} changeFn={changeTabFn}>
 
                     <Dropzone onFiles={this.handleFiles}/>
 
@@ -118,18 +141,17 @@ export class Input extends React.Component {
 class Tabs extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            active: 0,
-        };
         this.renderTitle = this.renderTitle.bind(this);
     }
     static propTypes = {
+        active: PropTypes.number.isRequired,
         titles: PropTypes.array.isRequired,
         children: PropTypes.array.isRequired,
+        changeFn: PropTypes.func.isRequired,
     };
 
     renderTitle(title, index) {
-        if (index == this.state.active) {
+        if (index == this.props.active) {
             return (
                 <li role="presentation" className="active" key={index}>
                     <a>{title}</a>
@@ -138,7 +160,7 @@ class Tabs extends React.Component {
         }
         return (
             <li role="presentation" key={index}>
-                <a href="" onClick={e => this.setState({active:index})}>{title}</a>
+                <a href="" onClick={e => this.props.changeFn(index)}>{title}</a>
             </li>
         );
     }
@@ -150,7 +172,7 @@ class Tabs extends React.Component {
                     {this.props.titles.map(this.renderTitle)}
                 </ul>
                 <div className="tab-child">
-                    {this.props.children[this.state.active]}
+                    {this.props.children[this.props.active]}
                 </div>
             </div>
         );

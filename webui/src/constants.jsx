@@ -15,6 +15,8 @@ export const apiPath = {
 export const clientPath = {
     root:       `${urlRoot}/`,
     input:      `${urlRoot}/input`,
+    inputurl:   `${urlRoot}/input-url`,
+    inputtext:  `${urlRoot}/input-text`,
     tools:      `${urlRoot}/tools`,
     help:       `${urlRoot}/help`,
     faq:        `${urlRoot}/help#faq`,
